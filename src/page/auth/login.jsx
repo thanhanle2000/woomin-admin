@@ -4,7 +4,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Snackbar from '@mui/material/Snackbar';
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import imgLogoLogin from '../../assets/logo-login-1.jpg';
 import { clearRememberedCredentials, getCredentials, saveCredentials, saveObUser } from "../../core/db/local";
 import { firestore } from "../../core/services/controller";
@@ -17,9 +16,6 @@ function Alert(props) {
 const LoginPage = () => {
     // data
     const dataAccount = getCredentials();
-
-    // nav
-    const navigate = useNavigate();
 
     // useState
     const [email, setEmail] = useState(dataAccount?.username ?? "");
@@ -68,7 +64,7 @@ const LoginPage = () => {
             console.log(userData);
             saveObUser(userData.name);
             setLoading(false);
-            navigate("/");
+            window.location.href = "/";
           } else {
             setStatus(false);
             setStringStatus("Email hoặc mật khẩu không chính xác");
@@ -112,14 +108,13 @@ const LoginPage = () => {
         setRememberMe(e.target.checked);
     };
 
-    // xử lí sự kiện enter
-    const handlePasswordKeyPress = (e) => {
+    // xử lí sự kiện Enter
+    const handleKeyPress = (e) => {
         if (e.key === "Enter") {
-          handleLogin();
+        handleLogin();
         }
-      };
-
-    return (
+    };
+        return (
         <div className="row-page-login">
             <div className="col-login">
                 <div className="wel-solgan">
@@ -138,7 +133,7 @@ const LoginPage = () => {
                     value={password}
                     onChange={handlePasswordChange}
                     placeholder="Mật khẩu của bạn"
-                    onKeyPress={handlePasswordKeyPress}
+                    onKeyPress={handleKeyPress}
                 />
                 <button className="btn-login mb-10 btn-click" onClick={handleLogin}>
                     {loading ? "Loading..." : "Đăng nhập"}
@@ -160,27 +155,27 @@ const LoginPage = () => {
                 </div>
             </div>
             <img className="img-logo-login mr-10" src={imgLogoLogin} alt=''/>
-            <Snackbar
-            open={open}
-            autoHideDuration={3000}
-            onClose={handleClose}
-            sx={{
-            bottom: 0,
-            width: "100%",
-            zIndex: 9999,
-            position: "fixed",
-            }}
-      >
-        <div>
-          <Alert
-            severity={status === true ? "success" : "error"}
-            onClose={handleClose}
-            sx={{ width: "100%", margin: "auto" }}
-          >
-            {stringStatus}
-          </Alert>
-        </div>
-      </Snackbar>
+                <Snackbar
+                open={open}
+                autoHideDuration={3000}
+                onClose={handleClose}
+                sx={{
+                bottom: 0,
+                width: "100%",
+                zIndex: 9999,
+                position: "fixed",
+                }}
+            >
+            <div>
+                <Alert
+                severity={status === true ? "success" : "error"}
+                onClose={handleClose}
+                sx={{ width: "100%", margin: "auto" }}
+                >
+                {stringStatus}
+                </Alert>
+            </div>
+            </Snackbar>
         </div >
     );
 };

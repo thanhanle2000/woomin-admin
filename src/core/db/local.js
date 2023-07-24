@@ -15,7 +15,6 @@ export const saveCredentials = (username, password) => {
 };
 
 // lấy thông tài khoản
-// Utility function to get credentials from the local storage
 export const getCredentials = () => {
     const credentialsJSON = localStorage.getItem("rememberedCredentials");
     return credentialsJSON ? JSON.parse(credentialsJSON) : null;

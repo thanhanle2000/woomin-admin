@@ -1,12 +1,11 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from 'react';
+import HeaderHome from './widget/header-home';
 
 const HomePage = () => {
     return (
-        <div>
-            HomePage
-            <Link to="/login">Go to Login Page</Link>
-        </div>
+       <div>
+        <HeaderHome/>
+       </div>
     )
 }
 
