@@ -3,7 +3,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Snackbar from '@mui/material/Snackbar';
 import { collection, getDocs, query, where } from "firebase/firestore";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import imgLogoLogin from '../../assets/logo-login-1.jpg';
 import { clearRememberedCredentials, getCredentials, saveCredentials, saveObUser } from "../../core/db/local";
@@ -27,15 +27,8 @@ const LoginPage = () => {
     const [stringStatus, setStringStatus] = useState('');
     const [open, setOpen] = useState(false);
     const [status, setStatus] = useState(false);
-    const [setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
-    const [setContentVisible] = useState(false);
     const [loading, setLoading] = useState(false);
-
-    // useEffect
-    useEffect(() => {
-        setContentVisible(true);
-    }, []);
 
 
     // handle change mail
@@ -74,7 +67,6 @@ const LoginPage = () => {
             const userData = querySnapshot.docs[0].data();
             console.log(userData);
             saveObUser(userData.name);
-            setContentVisible(false);
             setLoading(false);
             navigate("/");
           } else {
@@ -109,11 +101,6 @@ const LoginPage = () => {
         }
         setOpen(false);
     };
-
-    // hàm xử lí ẩn/ hiện password
-    // const handleTogglePasswordVisibility = () => {
-    //     setShowPassword((prevShowPassword) => !prevShowPassword);
-    // };
 
     // xử lí chuyển cuộc gọi
     const handlePhoneNumberClick = () => {
@@ -172,7 +159,7 @@ const LoginPage = () => {
                     Bạn chưa có tài khoản? Vui lòng liên hệ <span className="btn-click" onClick={handlePhoneNumberClick}>Admin</span>
                 </div>
             </div>
-            <img className="img-logo-login mr-10" src={imgLogoLogin} alt='' />
+            <img className="img-logo-login mr-10" src={imgLogoLogin} alt=''/>
             <Snackbar
             open={open}
             autoHideDuration={3000}
