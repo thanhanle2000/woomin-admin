@@ -4,7 +4,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Snackbar from '@mui/material/Snackbar';
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from 'react';
-import { useHistory, useNavigate } from 'react-router-dom';
 import imgLogoLogin from '../../assets/logo-login-1.jpg';
 import { clearRememberedCredentials, getCredentials, saveCredentials, saveObUser } from "../../core/db/local";
 import { firestore } from "../../core/services/controller";
@@ -18,8 +17,7 @@ const LoginPage = () => {
     // data
     const dataAccount = getCredentials();
 
-    // nav
-    const navigate = useNavigate();
+
 
     // useState
     const [email, setEmail] = useState(dataAccount?.username ?? "");
@@ -76,7 +74,6 @@ const LoginPage = () => {
             saveObUser(userData.name);
             setContentVisible(false);
             setLoading(false);
-            navigate("/");
           } else {
             setStatus(false);
             setStringStatus("Email hoặc mật khẩu không chính xác");
