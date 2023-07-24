@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const LoginPage = () => {
     return (
         <div>
-            LoginPage
+            LoginPage heloo babe
             <Link to="/">Go to Login Page</Link>
         </div>
     )
