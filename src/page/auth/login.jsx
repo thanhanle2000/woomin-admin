@@ -4,6 +4,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Snackbar from '@mui/material/Snackbar';
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import imgLogoLogin from '../../assets/logo-login-1.jpg';
 import { clearRememberedCredentials, getCredentials, saveCredentials, saveObUser } from "../../core/db/local";
 import { firestore } from "../../core/services/controller";
@@ -17,7 +18,8 @@ const LoginPage = () => {
     // data
     const dataAccount = getCredentials();
 
-
+    // nav
+    const navigate = useNavigate();
 
     // useState
     const [email, setEmail] = useState(dataAccount?.username ?? "");
@@ -25,9 +27,9 @@ const LoginPage = () => {
     const [stringStatus, setStringStatus] = useState('');
     const [open, setOpen] = useState(false);
     const [status, setStatus] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
+    const [setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
-    const [contentVisible, setContentVisible] = useState(false);
+    const [setContentVisible] = useState(false);
     const [loading, setLoading] = useState(false);
 
     // useEffect
@@ -74,6 +76,7 @@ const LoginPage = () => {
             saveObUser(userData.name);
             setContentVisible(false);
             setLoading(false);
+            navigate("/");
           } else {
             setStatus(false);
             setStringStatus("Email hoặc mật khẩu không chính xác");
@@ -108,9 +111,9 @@ const LoginPage = () => {
     };
 
     // hàm xử lí ẩn/ hiện password
-    const handleTogglePasswordVisibility = () => {
-        setShowPassword((prevShowPassword) => !prevShowPassword);
-    };
+    // const handleTogglePasswordVisibility = () => {
+    //     setShowPassword((prevShowPassword) => !prevShowPassword);
+    // };
 
     // xử lí chuyển cuộc gọi
     const handlePhoneNumberClick = () => {
@@ -169,7 +172,7 @@ const LoginPage = () => {
                     Bạn chưa có tài khoản? Vui lòng liên hệ <span className="btn-click" onClick={handlePhoneNumberClick}>Admin</span>
                 </div>
             </div>
-            <img className="img-logo-login mr-10" src={imgLogoLogin} />
+            <img className="img-logo-login mr-10" src={imgLogoLogin} alt='' />
             <Snackbar
             open={open}
             autoHideDuration={3000}
