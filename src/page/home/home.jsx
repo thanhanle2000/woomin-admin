@@ -1,11 +1,10 @@
 import React from 'react';
-import HeaderHome from './widget/header-home';
 
 const HomePage = () => {
     return (
-       <div>
-        <HeaderHome/>
-       </div>
+        <div className='page'>
+            home
+        </div>
     )
 }
 
