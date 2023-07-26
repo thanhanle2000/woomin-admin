@@ -5,7 +5,7 @@ import { getObUser } from '../core/db/local';
 import LoginPage from '../page/auth/login';
 import HomePage from '../page/home/home';
 import CustomHeader from './custom-header';
-import ImageManagePage from '../page/image/image';
+import { ImagePage } from '../page/image/image';
 
 function App() {
   // check login
@@ -18,7 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={isCheck ? <HomePage /> : <Navigate to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/image" element={<ImageManagePage />} />
+          <Route path="/image" element={<ImagePage />} />
         </Routes>
       </div>
     </Router>
