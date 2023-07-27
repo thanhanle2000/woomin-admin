@@ -32,7 +32,7 @@ const CustomDrawer = ({ id, visible, onClose }) => {
     const data = [
         { id: 1, name: "Thống kê", icon: <AssessmentIcon />, link: "/" },
         { id: 2, name: "Quản lý hình ảnh", icon: <ImageIcon />, link: "/image" },
-        { id: 3, name: "Quản lý bài viết", icon: <RateReviewIcon />, link: "" },
+        { id: 3, name: "Quản lý bài viết", icon: <RateReviewIcon />, link: "/blog" },
     ]
 
     // navigate
