@@ -8,7 +8,7 @@ const ImageTable = ({
 }) => {
   return (
     <div className="col-list-banner table-container ">
-      <div className="name-table-image mb-10">Image Banner</div>
+      <div className="name-table-image mb-10">Hình Ảnh Banner</div>
       <table className="image-table">
         <thead>
           <tr>
@@ -17,7 +17,8 @@ const ImageTable = ({
             <th>Trạng thái</th>
             <th>Người tạo</th>
             <th>Ngày tạo</th>
-            <th>Code</th>
+            <th>Người sửa</th>
+            <th>Ngày sửa</th>
           </tr>
         </thead>
         <tbody>
@@ -51,7 +52,8 @@ const ImageTable = ({
               </td>
               <td>{image.userCreate}</td>
               <td>{image.timeCreate}</td>
-              <td>{image.imageName}</td>
+              <td>{image.userUpdate}</td>
+              <td>{image.timeUpdate}</td>
             </tr>
           ))}
         </tbody>

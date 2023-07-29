@@ -9,6 +9,7 @@ import Loading from "../../components/loading";
 import { TableDataBlog } from "./widget/table-data-blog";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CSSTransition } from "react-transition-group";
+import EditIcon from '@mui/icons-material/Edit';
 
 const BlogPage = () => {
   // useState
@@ -66,6 +67,10 @@ const BlogPage = () => {
     );
   };
 
+  const handleEdit = (id) => {
+    navigate(`/edit-blog`, { state: { id } });
+  };
+
   return (
     <div className="page plr-15">
       <BreadCumHeader title={"QL Bài Viết"} />
@@ -74,6 +79,22 @@ const BlogPage = () => {
           <AddIcon />
           <button>Tạo mới</button>
         </div>
+        {selectedItems.length > 0 && (
+          <CSSTransition
+            in={selectedItems.length > 0}
+            timeout={500}
+            classNames="btn-delete-image"
+            unmountOnExit
+          >
+            <div
+              className="row-ic-edit mr-10"
+              onClick={() => selectedItems.forEach((id) => handleEdit(id))}
+            >
+              <EditIcon />
+              <button>Chỉnh Sửa</button>
+            </div>
+          </CSSTransition>
+        )}
         {selectedItems.length > 0 && (
           <CSSTransition
             in={selectedItems.length > 0}

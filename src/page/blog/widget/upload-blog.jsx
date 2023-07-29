@@ -1,22 +1,23 @@
 import { collection, doc, setDoc } from "firebase/firestore";
-import { ref, uploadBytesResumable } from "firebase/storage";
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { URL_Project } from "../../../core/contant/contants";
-import { firestore } from "../../../core/services/controller";
-import { storage } from "../../../core/services/firebase";
-import { getObUser } from "../../../core/db/local";
 import { useNavigate } from "react-router-dom";
+import { URL_Project } from "../../../core/contant/contants";
+import { formattedDateTime, convertFileToBase64 } from "../../../core/data-process/data-process";
+import { getObUser } from "../../../core/db/local";
+import { firestore } from "../../../core/services/controller";
 
 const UploadBlog = (props) => {
   // useState
   const [editorHtml, setEditorHtml] = useState("");
-  const [image, setImage] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [title, setTitle] = useState("");
   const [logo, setLogo] = useState(null);
+  const [isChecked, setIsChecked] = useState(false);
 
+  const handleCheckBoxChange = () => {
+    setIsChecked((prevValue) => !prevValue);
+  };
   // thay đổi html
   const handleChange = (html) => {
     setEditorHtml(html);
@@ -27,25 +28,6 @@ const UploadBlog = (props) => {
 
   // user
   const userOb = getObUser();
-
-  // get time now
-  const dateTimeNow = new Date();
-
-  const formattedDate = `${dateTimeNow
-    .getDate()
-    .toString()
-    .padStart(2, "0")}-${(dateTimeNow.getMonth() + 1)
-    .toString()
-    .padStart(2, "0")}-${dateTimeNow.getFullYear()}`;
-  const formattedTime = `${dateTimeNow
-    .getHours()
-    .toString()
-    .padStart(2, "0")} : ${dateTimeNow
-    .getMinutes()
-    .toString()
-    .padStart(2, "0")}`;
-
-  const formattedDateTime = `${formattedDate} ${formattedTime}`;
 
   // lưu trữ db
   const handleSave = () => {
@@ -59,49 +41,25 @@ const UploadBlog = (props) => {
         }
 
         const collectionRef = collection(firestore, "blogs");
+
         const newId = `${URL_Project}-${Math.random()
           .toString(36)
           .substring(2, 8)}`;
 
         const data = {
-          id: newId,
-          title: title,
-          content: editorHtml,
-          creationTime: formattedDateTime,
-          userCreate: userOb,
-          status: true,
-          logo: logoBase64,
+          id: newId, // id của bài viết
+          title: title, // title của bài viết
+          content: editorHtml, // nội dung bài viết
+          creationTime: formattedDateTime, // thời gian create bài viết
+          userCreate: userOb, // thông tin user create
+          status: isChecked, // trạng thái
+          logo: logoBase64, // logo bài viết
+          userUpdate: null, // user update,
+          timeUpdate: null // thời gian update
         };
         if (logoBase64 !== null && title !== "" && editorHtml !== null) {
           await setDoc(doc(collectionRef, newId), data);
           navigate("/blog");
-          // Clear the data after saving
-          setEditorHtml("");
-          setImage(null);
-          setUploadProgress(0);
-          setTitle("");
-          setLogo(null);
-        }
-        // If there is an image, upload it to Firebase Storage
-        if (image) {
-          const imageRef = ref(storage, `images/${newId}`);
-          const uploadTask = uploadBytesResumable(imageRef, image);
-
-          uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-              const progress = Math.round(
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-              );
-              setUploadProgress(progress);
-            },
-            (error) => {
-              console.log("Error uploading image:", error);
-            },
-            () => {
-              console.log("Image uploaded successfully!");
-            }
-          );
         }
       } catch (error) {
         console.error("Error saving data:", error);
@@ -109,25 +67,36 @@ const UploadBlog = (props) => {
     };
     saveData();
   };
-
-  // đổi định dạng ảnh sang base 64
-  const convertFileToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === "string") {
-          resolve(reader.result);
-        } else {
-          resolve(null);
-        }
-      };
-      reader.onerror = () => {
-        resolve(null);
-      };
-      reader.readAsDataURL(file);
-    });
+  const modules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+      ["link", "image"],
+      [{ align: [] }], // Thêm nút căn giữa trái, căn giữa phải, căn giữa
+      ["clean"],
+    ],
+    clipboard: {
+      matchVisual: false,
+    },
   };
 
+
+  const formats = [
+    "header",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+  ];
   return (
     <div className="page plr-15">
       <div className="title-blog pbt-10">
@@ -139,6 +108,17 @@ const UploadBlog = (props) => {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="VD: Tin tức mới"
         />
+        <div className="checkbox-row">
+          <label className="w-80">
+            <span className="custom-checkbox" />
+            Trạng thái
+          </label>
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={handleCheckBoxChange}
+          />
+        </div>
       </div>
       <div className="row-input-blog pbt-10">
         <label>Logo</label>
@@ -170,66 +150,21 @@ const UploadBlog = (props) => {
         </div>
       </div>
 
-      {uploadProgress > 0 && <p>Đang tải lên: {uploadProgress}%</p>}
       <div className="cus-quill">
         <ReactQuill
           onChange={handleChange}
           value={editorHtml}
-          modules={UploadBlog.modules}
-          formats={UploadBlog.formats}
+          modules={modules}
+          formats={formats}
           bounds={".app"}
           placeholder={props.placeholder}
         />
       </div>
-      {image && (
-        <div>
-          <p>Hình ảnh đã chọn:</p>
-          <img
-            src={URL.createObjectURL(image)}
-            alt="Selected"
-            style={{ maxWidth: "200px" }}
-          />
-        </div>
-      )}
       <button className="btn-save-blog" onClick={handleSave}>
         Lưu bài viết
       </button>
     </div>
   );
 };
-
-UploadBlog.modules = {
-  toolbar: [
-    [{ header: "1" }, { header: "2" }],
-    [{ size: [] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    ["link", "image"],
-    ["clean"],
-  ],
-  clipboard: {
-    matchVisual: false,
-  },
-};
-
-UploadBlog.formats = [
-  "header",
-  "size",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "list",
-  "bullet",
-  "indent",
-  "link",
-  "image",
-];
 
 export default UploadBlog;

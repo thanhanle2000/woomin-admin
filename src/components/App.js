@@ -8,6 +8,7 @@ import CustomHeader from './custom-header';
 import { ImagePage } from '../page/image/image';
 import BlogPage from '../page/blog/blog';
 import UploadBlog from '../page/blog/widget/upload-blog';
+import EditBlogPage from '../page/blog/widget/edit-blog';
 
 function App() {
   // check login
@@ -23,6 +24,7 @@ function App() {
           <Route path="/image" element={<ImagePage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/upload-blog" element={<UploadBlog />} />
+          <Route path="/edit-blog" element={<EditBlogPage />} />
         </Routes>
       </div>
     </Router>

@@ -332,8 +332,8 @@ input[type="search"] {
 }
 
 .img-upload-view {
-  height: 90px;
-  width: 90px;
+  height: 85px;
+  width: 85px;
   padding-left: 20px;
 }
 
@@ -530,7 +530,6 @@ input[type="search"] {
 .title-blog label {
   font-size: 14px;
   font-weight: 500;
-  padding-bottom: 5px;
   width: 130px;
   text-align: start;
 }
@@ -546,7 +545,7 @@ input[type="search"] {
   border-radius: 4px;
   padding-left: 5px;
   font-size: 14px;
-  width: 30%;
+  width: 50%;
 }
 
 .p-l-r-10 {
@@ -726,6 +725,30 @@ input[type="search"] {
   color: white;
 }
 
+.row-ic-edit {
+  height: 30px;
+  background-color: #dbdb73;
+  text-align: center;
+  border-radius: 4px;
+  padding: 4px 10px 4px 10px;
+  color: white;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  width: 25%;
+  margin-top: 10px;
+  min-width: 115px;
+}
+
+.row-ic-edit button {
+  background-color: #dbdb73;
+  border: 1px solid #dbdb73;
+  color: white;
+}
+
 .quill {
   height: 65vh;
 }
@@ -778,13 +801,15 @@ input[type="search"] {
 /* Định dạng khung cho bảng */
 .table-container {
   width: 100%;
-  overflow-x: auto; /* Thêm thanh cuộn ngang khi bảng quá rộng */
+  overflow-x: auto;
+  /* Thêm thanh cuộn ngang khi bảng quá rộng */
 }
 
 /* Định dạng bảng */
 table {
   width: 100%;
-  border-collapse: collapse; /* Xóa khoảng cách giữa các ô */
+  border-collapse: collapse;
+  /* Xóa khoảng cách giữa các ô */
 }
 
 /* Định dạng tiêu đề bảng */
@@ -794,14 +819,16 @@ th {
   font-weight: bold;
   padding: 10px;
   text-align: left;
-  border: 1px solid #ddd; /* Đường viền cho tiêu đề */
+  border: 1px solid #ddd;
+  /* Đường viền cho tiêu đề */
 }
 
 /* Định dạng các ô dữ liệu */
 td {
   padding: 10px;
   text-align: left;
-  border: 1px solid #ddd; /* Đường viền cho ô dữ liệu */
+  border: 1px solid #ddd;
+  /* Đường viền cho ô dữ liệu */
 }
 
 /* Định dạng hàng chẵn của bảng */
@@ -821,4 +848,15 @@ tr:nth-child(even) {
   display: flex;
   flex-direction: row;
   width: 35%;
+}
+
+.checkbox-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 30px;
+}
+
+.w-80 {
+  width: 80px !important;
 }

@@ -11,11 +11,14 @@ export const TableDataBlog = ({
       <table className="image-table">
         <thead>
           <tr>
-            <th>Chọn</th>
+            <th></th>
             <th>Hình ảnh</th>
             <th>Tên bài viết</th>
             <th>Trạng thái</th>
+            <th>Người tạo</th>
             <th>Thời gian tạo</th>
+            <th>Người sửa</th>
+            <th>Thời gian sửa</th>
           </tr>
         </thead>
         <tbody>
@@ -40,12 +43,17 @@ export const TableDataBlog = ({
                 )}
               </td>
               <td>{document.title}</td>
-              <td>
+              <td className={
+                document.status ? "active-image-banner" : "unactive-image-banner"
+              }>
                 {document.status === true
                   ? "Đang hoạt động"
                   : "Ngưng hoạt động"}
               </td>
+              <td>{document.userCreate}</td>
               <td>{document.creationTime}</td>
+              <td>{document.userUpdate}</td>
+              <td>{document.timeUpdate}</td>
             </tr>
           ))}
         </tbody>

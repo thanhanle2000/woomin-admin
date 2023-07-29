@@ -1,6 +1,5 @@
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Alert, Snackbar } from "@mui/material";
 import {
   collection,
   deleteDoc,
@@ -8,17 +7,19 @@ import {
   getDoc,
   getDocs,
   setDoc,
-  updateDoc,
+  updateDoc
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { CSSTransition } from "react-transition-group";
+import BreadCumHeader from "../../components/breadcum-header";
+import CustomSnackBar from "../../components/custom-snackbar";
 import Loading from "../../components/loading";
 import { URL_Project } from "../../core/contant/contants";
-import { firestore } from "../../core/services/controller";
-import PopupActives from "./widget/popup-actives";
-import BreadCumHeader from "../../components/breadcum-header";
-import ImageTable from "./widget/table-image";
+import { formattedDateTime } from "../../core/data-process/data-process";
 import { getObUser } from "../../core/db/local";
+import { firestore } from "../../core/services/controller";
+import PopupActives from "../../components/popup-actives";
+import ImageTable from "./widget/table-image";
 
 export function ImagePage() {
   // useState
@@ -38,25 +39,6 @@ export function ImagePage() {
 
   // obUser
   const obUser = getObUser();
-
-  // get time now
-  const dateTimeNow = new Date();
-
-  const formattedDate = `${dateTimeNow
-    .getDate()
-    .toString()
-    .padStart(2, "0")}-${(dateTimeNow.getMonth() + 1)
-    .toString()
-    .padStart(2, "0")}-${dateTimeNow.getFullYear()}`;
-  const formattedTime = `${dateTimeNow
-    .getHours()
-    .toString()
-    .padStart(2, "0")} : ${dateTimeNow
-    .getMinutes()
-    .toString()
-    .padStart(2, "0")}`;
-
-  const formattedDateTime = `${formattedDate} ${formattedTime}`;
 
   // hàm xử lí lấy ảnh từ local
   const handleFileUpload = (event) => {
@@ -91,11 +73,11 @@ export function ImagePage() {
 
     if (isSize) {
       setLoading(true); // Show loading state
-
-      const newId = `${URL_Project}-${Math.random()
+      const imageName = `${URL_Project}-${Math.random()
         .toString(36)
         .substring(2, 8)}`;
-      const imageName = `${URL_Project}-${Math.random()
+
+      const newId = `${URL_Project}-${Math.random()
         .toString(36)
         .substring(2, 8)}`;
 
@@ -107,6 +89,8 @@ export function ImagePage() {
           imageName: imageName,
           userCreate: obUser,
           timeCreate: formattedDateTime,
+          timeUpdate: null,
+          userUpdate: null
         };
 
         const collectionRef = collection(firestore, "banner-mobile");
@@ -168,6 +152,8 @@ export function ImagePage() {
     });
   };
 
+
+
   // useEffect
   useEffect(() => {
     setLoading(true); // Show loading state
@@ -190,14 +176,6 @@ export function ImagePage() {
 
     fetchImages();
   }, []);
-
-  // handle close message snackbar
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
 
   // xử lí việc actives ảnh
   const handleActiveChange = (event) => {
@@ -234,7 +212,7 @@ export function ImagePage() {
       const collectionRef = collection(firestore, "banner-mobile");
       const imageDocRef = doc(collectionRef, activeImageId);
 
-      await updateDoc(imageDocRef, { active: currentActive });
+      await updateDoc(imageDocRef, { active: currentActive, timeUpdate: formattedDateTime, userUpdate: obUser });
 
       setLstImage((prev) =>
         prev.map((image) =>
@@ -278,7 +256,7 @@ export function ImagePage() {
             <div className="icon-camera">
               <AddAPhotoIcon />
             </div>
-            <span>Add Image</span>
+            <span>Thêm Ảnh</span>
           </div>
           {selectedImages.length > 0 && (
             <CSSTransition
@@ -291,7 +269,7 @@ export function ImagePage() {
                 <div className="icon-camera">
                   <DeleteIcon />
                 </div>
-                <span>Delete Image</span>
+                <span>Xóa Ảnh</span>
               </div>
             </CSSTransition>
           )}
@@ -299,16 +277,12 @@ export function ImagePage() {
       </div>
       {loading ? (
         <Loading />
-      ) : lstImage.length === 0 ? (
-        <div className="title-no-photo">Không có ảnh được tải lên!</div>
-      ) : (
-        <ImageTable
-          lstImage={lstImage}
-          selectedImages={selectedImages}
-          handleCheckboxChange={handleCheckboxChange}
-          openModal={openModal}
-        />
-      )}
+      ) : <ImageTable
+        lstImage={lstImage}
+        selectedImages={selectedImages}
+        handleCheckboxChange={handleCheckboxChange}
+        openModal={openModal}
+      />}
       {isModalOpen && (
         <PopupActives
           currentActive={currentActive}
@@ -317,14 +291,7 @@ export function ImagePage() {
           updateImageActiveStatus={updateImageActiveStatus}
         />
       )}
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-        <Alert
-          severity={status === true ? "success" : "error"}
-          sx={{ width: "100%" }}
-        >
-          {stringStatus}
-        </Alert>
-      </Snackbar>
+      <CustomSnackBar open={open} stringStatus={stringStatus} status={status} />
     </div>
   );
 }
