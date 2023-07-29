@@ -1,14 +1,14 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -109,7 +109,7 @@ code {
   position: relative;
   background-color: white;
   width: 62%;
-  border-radius: 6px
+  border-radius: 6px;
 }
 
 .mb-10 {
@@ -175,7 +175,7 @@ code {
   width: 50%;
 }
 
-input[type='search'] {
+input[type="search"] {
   border: none;
   background-color: transparent;
   outline: none;
@@ -254,7 +254,6 @@ input[type='search'] {
   background-color: white;
 }
 
-
 .Drawer[aria-hidden="false"] {
   transform: translate(0, 0);
   transition: transform 0.3s linear;
@@ -266,7 +265,7 @@ input[type='search'] {
 
 .page {
   background-color: whitesmoke;
-  min-height: 100vh;
+  min-height: 94vh;
 }
 
 .ic-close-dr {
@@ -292,7 +291,6 @@ input[type='search'] {
 
 .dp-none {
   display: none;
-
 }
 
 .row-ac-dr {
@@ -334,13 +332,13 @@ input[type='search'] {
 }
 
 .img-upload-view {
-  height: 100px;
-  width: 100px;
+  height: 90px;
+  width: 90px;
   padding-left: 20px;
 }
 
 .btn-upload-image {
-  height: 35px;
+  height: 30px;
   background-color: green;
   text-align: center;
   border-radius: 4px;
@@ -352,7 +350,8 @@ input[type='search'] {
   align-items: center;
   justify-content: center;
   font-weight: 500;
-  width: 35%;
+  width: 20%;
+  min-width: 100px;
 }
 
 .btn-upload-image span {
@@ -360,7 +359,7 @@ input[type='search'] {
 }
 
 .btn-delete-image {
-  height: 35px;
+  height: 30px;
   background-color: red;
   text-align: center;
   border-radius: 4px;
@@ -371,7 +370,8 @@ input[type='search'] {
   align-items: center;
   justify-content: center;
   font-weight: 500;
-  width: 35%;
+  width: 25%;
+  min-width: 115px;
 }
 
 .btn-delete-image span {
@@ -432,7 +432,6 @@ input[type='search'] {
   }
 }
 
-
 .active-image-banner {
   font-size: 14px;
   color: green;
@@ -469,6 +468,7 @@ input[type='search'] {
   border-radius: 6px;
   text-align: center;
   width: 40%;
+  border: 1px solid green;
 }
 
 .btn-colse-actives {
@@ -478,6 +478,7 @@ input[type='search'] {
   border-radius: 6px;
   text-align: center;
   width: 40%;
+  border: 1px solid red;
 }
 
 .row-btn-update {
@@ -565,7 +566,7 @@ input[type='search'] {
   width: 15%;
   color: white;
   border-radius: 6px;
-  margin-top: 40px;
+  margin-top: 20px;
   border: 1px solid green;
 }
 
@@ -616,7 +617,7 @@ input[type='search'] {
 }
 
 .image-table th {
-  font-size: 16px !important;
+  font-size: 14px !important;
   font-weight: 500;
 }
 
@@ -624,12 +625,11 @@ input[type='search'] {
   font-size: 15px;
 }
 
-
 .col-list-banner {
   background-color: white;
   padding: 10px;
   border: 1px solid #dfdcdc;
-  border-radius: 8px;
+  border-radius: 4px;
   margin-top: 20px;
 }
 
@@ -639,7 +639,7 @@ input[type='search'] {
 
 .name-table-image {
   text-align: start;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
 }
 
@@ -663,7 +663,6 @@ input[type='search'] {
 
 .row-btn-img {
   display: flex;
-  justify-content: space-between;
   width: 35%;
 }
 
@@ -680,15 +679,21 @@ input[type='search'] {
 }
 
 .row-ic-add {
+  height: 30px;
+  background-color: green;
+  text-align: center;
+  border-radius: 4px;
+  padding: 4px 10px 4px 10px;
+  color: white;
+  font-size: 14px;
   display: flex;
   flex-direction: row;
-  background-color: green;
-  width: 100px;
-  padding: 4px;
-  border-radius: 6px;
-  color: white;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  width: 25%;
   margin-top: 10px;
-  margin-bottom: 10px;
+  min-width: 100px;
 }
 
 .row-ic-add button {
@@ -697,8 +702,37 @@ input[type='search'] {
   color: white;
 }
 
+.row-ic-delete {
+  height: 30px;
+  background-color: red;
+  text-align: center;
+  border-radius: 4px;
+  padding: 4px 10px 4px 10px;
+  color: white;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  width: 25%;
+  margin-top: 10px;
+  min-width: 115px;
+}
+
+.row-ic-delete button {
+  background-color: red;
+  border: 1px solid red;
+  color: white;
+}
+
 .quill {
   height: 65vh;
+}
+
+.cus-quill {
+  background-color: white;
+  padding-bottom: 31px;
 }
 
 .pbt-10 {
@@ -719,6 +753,8 @@ input[type='search'] {
   padding: 10px;
   align-items: center;
   width: 29%;
+  border: 1px solid #dbd7d7;
+  border-radius: 4px;
 }
 
 .row-input-blog label {
@@ -727,4 +763,62 @@ input[type='search'] {
   padding-bottom: 5px;
   width: 130px;
   text-align: start;
+}
+
+.col-data-blog {
+  display: flex;
+  flex-direction: column;
+}
+
+.col-data-blog tr {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* Định dạng khung cho bảng */
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* Thêm thanh cuộn ngang khi bảng quá rộng */
+}
+
+/* Định dạng bảng */
+table {
+  width: 100%;
+  border-collapse: collapse; /* Xóa khoảng cách giữa các ô */
+}
+
+/* Định dạng tiêu đề bảng */
+th {
+  background-color: #f2f2f2;
+  color: #333;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd; /* Đường viền cho tiêu đề */
+}
+
+/* Định dạng các ô dữ liệu */
+td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd; /* Đường viền cho ô dữ liệu */
+}
+
+/* Định dạng hàng chẵn của bảng */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.image-table td {
+  font-size: 13px !important;
+}
+
+.btn-ac-blog {
+  display: flex;
+  flex-direction: row;
+  width: 35%;
 }
