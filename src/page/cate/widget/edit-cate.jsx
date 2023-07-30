@@ -1,44 +1,35 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { convertFileToBase64, formattedDateTime } from "../../../core/data-process/data-process";
 import { getObUser } from "../../../core/db/local";
 import { firestore } from "../../../core/services/controller";
 import { toast } from 'react-toastify';
 
-const EditBlogPage = () => {
+const EditCatePage = () => {
     // useState
-    const [editorHtml, setEditorHtml] = useState("");
     const [title, setTitle] = useState("");
     const [logo, setLogo] = useState(null);
     const [logoPreview, setLogoPreview] = useState(null);
     const [isChecked, setIsChecked] = useState(false);
-
-    // handle check box
-    const handleCheckBoxChange = () => {
-        setIsChecked((prevValue) => !prevValue);
-    };
 
     // navigate
     const { state } = useLocation();
     const { id } = state || {};
     const navigate = useNavigate();
 
-    // use
+    // user
     const userUpdate = getObUser();
 
     // useEffect
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const documentRef = doc(firestore, "blogs", id);
+                const documentRef = doc(firestore, "category", id);
                 const documentSnapshot = await getDoc(documentRef);
                 if (documentSnapshot.exists()) {
                     const documentData = documentSnapshot.data();
                     setTitle(documentData.title);
-                    setEditorHtml(documentData.content);
                     setIsChecked(documentData.status);
                     if (documentData.logo) {
                         setLogoPreview(documentData.logo);
@@ -86,17 +77,16 @@ const EditBlogPage = () => {
                 const logoData = await convertFileToBase64(logo);
                 logoBase64 = logoData;
             }
-            const documentRef = doc(firestore, "blogs", id);
+            const documentRef = doc(firestore, "category", id);
             await updateDoc(documentRef, {
                 title: title,
-                content: editorHtml,
                 logo: logoBase64 !== null ? logoBase64 : logoPreview,
                 userUpdate: userUpdate,
                 timeUpdate: formattedDateTime,
                 status: isChecked
             });
-            navigate("/blog");
-            toast.success('Update bài viết thành công.', {
+            navigate("/cate");
+            toast.success('Update danh mục thành công.', {
                 position: "bottom-left",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -120,37 +110,10 @@ const EditBlogPage = () => {
         }
     };
 
-
-    const modules = {
-        toolbar: [
-            [{ header: "1" }, { header: "2" }],
-            [{ size: [] }],
-            ["bold", "italic", "underline", "strike", "blockquote"],
-            [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
-            ["link", "image"],
-            [{ align: [] }], // Thêm nút căn giữa trái, căn giữa phải, căn giữa
-            ["clean"],
-        ],
-        clipboard: {
-            matchVisual: false,
-        },
+    // handle check box
+    const handleCheckBoxChange = () => {
+        setIsChecked((prevValue) => !prevValue);
     };
-
-
-    const formats = [
-        "header",
-        "size",
-        "bold",
-        "italic",
-        "underline",
-        "strike",
-        "blockquote",
-        "list",
-        "bullet",
-        "indent",
-        "link",
-        "image",
-    ];
 
     return (
         <div className="page plr-15">
@@ -204,20 +167,11 @@ const EditBlogPage = () => {
                     )}
                 </div>
             </div>
-            <div className="cus-quill">
-                <ReactQuill
-                    value={editorHtml}
-                    onChange={setEditorHtml}
-                    modules={modules}
-                    formats={formats}
-                    placeholder="Nhập nội dung"
-                />
-            </div>
             <button className="btn-save-blog" onClick={handleUpdate}>
                 Cập nhật
             </button>
         </div>
-    );
-};
+    )
+}
 
-export default EditBlogPage;
+export default EditCatePage

@@ -23,7 +23,7 @@ const LoginPage = () => {
   const dataAccount = getCredentials();
 
   // useState
-  const [email, setEmail] = useState(dataAccount?.username ?? "");
+  const [phone, setphone] = useState(dataAccount?.username ?? "");
   const [password, setPassword] = useState(dataAccount?.password ?? "");
   const [stringStatus, setStringStatus] = useState("");
   const [open, setOpen] = useState(false);
@@ -32,8 +32,8 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
 
   // handle change mail
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const handlephoneChange = (e) => {
+    setphone(e.target.value);
   };
 
   // handle change password
@@ -42,18 +42,18 @@ const LoginPage = () => {
   };
 
   // xử lí sự kiện login
-  const loginAndFetchUserData = async (email, password) => {
+  const loginAndFetchUserData = async (phone, password) => {
     try {
       const usersCollection = collection(firestore, "users");
       const q = query(
         usersCollection,
-        where("email", "==", email),
+        where("phone", "==", phone),
         where("password", "==", password)
       );
       const querySnapshot = await getDocs(q);
-      if (email === "") {
+      if (phone === "") {
         setStatus(false);
-        setStringStatus("Email không hợp lệ");
+        setStringStatus("phone không hợp lệ");
         setOpen(true);
         return;
       }
@@ -71,7 +71,7 @@ const LoginPage = () => {
         window.location.href = "/";
       } else {
         setStatus(false);
-        setStringStatus("Email hoặc mật khẩu không chính xác");
+        setStringStatus("phone hoặc mật khẩu không chính xác");
         setOpen(true); // Open the Snackbar
         setLoading(false);
       }
@@ -86,9 +86,9 @@ const LoginPage = () => {
   // handle login
   const handleLogin = () => {
     setLoading(true);
-    loginAndFetchUserData(email, password);
+    loginAndFetchUserData(phone, password);
     if (rememberMe === true) {
-      saveCredentials(email, password);
+      saveCredentials(phone, password);
     } else {
       clearRememberedCredentials();
     }
@@ -126,9 +126,9 @@ const LoginPage = () => {
         </div>
         <input
           className="input-login mb-20"
-          type="email"
-          value={email}
-          onChange={handleEmailChange}
+          type="phone"
+          value={phone}
+          onChange={handlephoneChange}
           placeholder="Tài khoản của bạn"
         />
         <input

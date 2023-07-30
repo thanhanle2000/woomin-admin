@@ -1,12 +1,14 @@
-import { collection, doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { URL_Project } from "../../../core/contant/contants";
-import { formattedDateTime, convertFileToBase64 } from "../../../core/data-process/data-process";
+import { convertFileToBase64, formattedDateTime } from "../../../core/data-process/data-process";
 import { getObUser } from "../../../core/db/local";
 import { firestore } from "../../../core/services/controller";
+import { collection, doc, setDoc } from "firebase/firestore";
+
 
 const UploadBlog = (props) => {
   // useState
@@ -15,9 +17,11 @@ const UploadBlog = (props) => {
   const [logo, setLogo] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
 
+  // check box
   const handleCheckBoxChange = () => {
     setIsChecked((prevValue) => !prevValue);
   };
+
   // thay đổi html
   const handleChange = (html) => {
     setEditorHtml(html);
@@ -60,9 +64,28 @@ const UploadBlog = (props) => {
         if (logoBase64 !== null && title !== "" && editorHtml !== null) {
           await setDoc(doc(collectionRef, newId), data);
           navigate("/blog");
+          toast.success('Thêm bài viết thành công.', {
+            position: "bottom-left",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         }
       } catch (error) {
-        console.error("Error saving data:", error);
+        toast.error(error, {
+          position: "bottom-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     };
     saveData();

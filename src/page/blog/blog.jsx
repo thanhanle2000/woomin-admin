@@ -10,6 +10,8 @@ import { TableDataBlog } from "./widget/table-data-blog";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CSSTransition } from "react-transition-group";
 import EditIcon from '@mui/icons-material/Edit';
+import { toast } from 'react-toastify';
+
 
 const BlogPage = () => {
   // useState
@@ -43,7 +45,16 @@ const BlogPage = () => {
       setDocuments(documentsData);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      toast.error(error, {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -51,11 +62,29 @@ const BlogPage = () => {
     try {
       const documentRef = doc(firestore, "blogs", id);
       await deleteDoc(documentRef);
-      console.log("Document deleted successfully");
+      toast.success('Xóa bài viết thành công.', {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       fetchData();
       setSelectedItems([]);
     } catch (error) {
-      console.error("Error deleting document:", error);
+      toast.error(error, {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -67,6 +96,7 @@ const BlogPage = () => {
     );
   };
 
+  // handle edit blog
   const handleEdit = (id) => {
     navigate(`/edit-blog`, { state: { id } });
   };

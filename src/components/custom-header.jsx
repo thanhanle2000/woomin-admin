@@ -5,11 +5,15 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CustomDrawer from './custom-drawer';
 import { getObUser } from '../core/db/local';
+import { useLocation } from 'react-router-dom';
 
 const CustomHeader = () => {
   // useState
   const [visible, setVisible] = useState(false);
   const drawerRef = useRef(null);
+
+  // path 
+  const isPath = useLocation();
 
   // handle onclick
   const onClick = () => {
@@ -42,26 +46,28 @@ const CustomHeader = () => {
 
   return (
     <div>
-      <div className='row-header'>
-        <div className='icon-drawer' ref={drawerRef} onClick={onClick}>
-          <TableRowsIcon />
-        </div>
-        <CustomDrawer id="navigation" visible={visible} onClose={toggleDrawer} />
-        <div className='search-input-container'>
-          <input type='search' placeholder='Nhập nội dung cần tìm' />
-          <SearchIcon className='search-icon' />
-        </div>
-        <div className='user-if'>
-          <NotificationsNoneIcon className='icon-noti' />
-          <div className='row-if'>
-            <AccountCircleIcon />
-            <div className='col-if-user'>
-              <div className='title-wel'>Welcome</div>
-              <div className='name-ac'>{user}</div>
+      {
+        isPath.pathname === "/login" ? null : <div className='row-header'>
+          <div className='icon-drawer' ref={drawerRef} onClick={onClick}>
+            <TableRowsIcon />
+          </div>
+          <CustomDrawer id="navigation" visible={visible} onClose={toggleDrawer} />
+          <div className='search-input-container'>
+            <input type='search' placeholder='Nhập nội dung cần tìm' />
+            <SearchIcon className='search-icon' />
+          </div>
+          <div className='user-if'>
+            <NotificationsNoneIcon className='icon-noti' />
+            <div className='row-if'>
+              <AccountCircleIcon />
+              <div className='col-if-user'>
+                <div className='title-wel'>Welcome</div>
+                <div className='name-ac'>{user}</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      }
     </div>
   );
 };

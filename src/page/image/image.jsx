@@ -10,15 +10,15 @@ import {
   updateDoc
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { toast } from 'react-toastify';
 import { CSSTransition } from "react-transition-group";
 import BreadCumHeader from "../../components/breadcum-header";
-import CustomSnackBar from "../../components/custom-snackbar";
 import Loading from "../../components/loading";
+import PopupActives from "../../components/popup-actives";
 import { URL_Project } from "../../core/contant/contants";
 import { formattedDateTime } from "../../core/data-process/data-process";
 import { getObUser } from "../../core/db/local";
 import { firestore } from "../../core/services/controller";
-import PopupActives from "../../components/popup-actives";
 import ImageTable from "./widget/table-image";
 
 export function ImagePage() {
@@ -27,9 +27,6 @@ export function ImagePage() {
   const [lstImage, setLstImage] = useState([]);
   const [isSize, setIsSize] = useState(true);
   const [selectedImages, setSelectedImages] = useState([]);
-  const [status, setStatus] = useState(false);
-  const [stringStatus, setStringStatus] = useState("");
-  const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [imageBase64, setImageBase64] = useState(null);
@@ -44,9 +41,16 @@ export function ImagePage() {
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
     if (!file) {
-      setOpen(true);
-      setStatus(false);
-      setStringStatus("Lỗi: Không tìm thấy file");
+      toast.error("Lỗi: Không tìm thấy file", {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
     const maxSize = 1 * 1024 * 1024; // Kích thước tối đa là 1MB
@@ -97,14 +101,27 @@ export function ImagePage() {
         await setDoc(doc(collectionRef, newId), imageData);
 
         setLstImage((prev) => [...prev, imageData]);
-        setOpen(true);
-        setStatus(true);
-        setStringStatus("Ảnh đã được thêm thành công");
+        toast.success('Ảnh đã được thêm thành công.', {
+          position: "bottom-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } catch (error) {
-        console.log("Lỗi upload ảnh:", error);
-        setOpen(true);
-        setStatus(false);
-        setStringStatus("Lỗi: Không thể upload ảnh");
+        toast.error(error, {
+          position: "bottom-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } finally {
         setLoading(false); // Hide loading state
       }
@@ -124,15 +141,28 @@ export function ImagePage() {
         setLstImage((prev) =>
           prev.filter((item) => !selectedImages.includes(item.id))
         );
-        setOpen(true);
-        setStatus(true);
-        setStringStatus("Ảnh đã được xóa thành công");
+        toast.success("Ảnh đã được xóa thành công.", {
+          position: "bottom-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       })
       .catch((error) => {
-        console.log("Lỗi xóa ảnh:", error);
-        setOpen(true);
-        setStatus(false);
-        setStringStatus("Lỗi: Không thể xóa ảnh");
+        toast.error(error, {
+          position: "bottom-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       })
       .finally(() => {
         setSelectedImages([]); // Reset danh sách ảnh được chọn
@@ -168,7 +198,16 @@ export function ImagePage() {
         }));
         setLstImage(images);
       } catch (error) {
-        console.log("Error fetching images:", error);
+        toast.error(error, {
+          position: "bottom-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } finally {
         setLoading(false); // Hide loading state
       }
@@ -195,7 +234,16 @@ export function ImagePage() {
         setCurrentActive(active);
       }
     } catch (error) {
-      console.log("Lỗi khi lấy giá trị active từ Firestore:", error);
+      toast.error("Lỗi khi lấy giá trị active từ Firestore:", error, {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
 
     setIsModalOpen(true);
@@ -221,15 +269,27 @@ export function ImagePage() {
             : image
         )
       );
-
-      setOpen(true);
-      setStatus(true);
-      setStringStatus("Cập nhật trạng thái thành công");
+      toast.success('Cập nhật trạng thái thành công.', {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } catch (error) {
-      console.log("Lỗi cập nhật trạng thái:", error);
-      setOpen(true);
-      setStatus(false);
-      setStringStatus("Lỗi: Không thể cập nhật trạng thái");
+      toast.error(error, {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } finally {
       setLoading(false); // Hide loading state
       setIsModalOpen(false); // Close the modal
@@ -291,7 +351,6 @@ export function ImagePage() {
           updateImageActiveStatus={updateImageActiveStatus}
         />
       )}
-      <CustomSnackBar open={open} stringStatus={stringStatus} status={status} />
     </div>
   );
 }
