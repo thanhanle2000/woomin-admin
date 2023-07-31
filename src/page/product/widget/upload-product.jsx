@@ -205,7 +205,7 @@ const UploadProduct = () => {
                                 <img
                                     key={index}
                                     src={imageUrl}
-                                    alt={`Image ${index}`}
+                                    alt={`Image`}
                                     className="img-multi-select"
                                 />
                             ))}
