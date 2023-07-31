@@ -1,16 +1,16 @@
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from '@mui/icons-material/Edit';
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
-import BreadCumHeader from "../../components/breadcum-header";
-import { firestore } from "../../core/services/controller";
-import Loading from "../../components/loading";
-import { TableDataBlog } from "./widget/table-data-blog";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { CSSTransition } from "react-transition-group";
-import EditIcon from '@mui/icons-material/Edit';
-import { toast } from 'react-toastify';
+import { alert_snackbar } from "../../components/alert";
+import BreadCumHeader from "../../components/breadcum-header";
+import Loading from "../../components/loading";
+import { firestore } from "../../core/services/controller";
+import { TableDataBlog } from "./widget/table-data-blog";
 
 
 const BlogPage = () => {
@@ -45,16 +45,7 @@ const BlogPage = () => {
       setDocuments(documentsData);
       setLoading(false);
     } catch (error) {
-      toast.error(error, {
-        position: "bottom-left",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      alert_snackbar(error, 2);
     }
   };
 
@@ -62,29 +53,11 @@ const BlogPage = () => {
     try {
       const documentRef = doc(firestore, "blogs", id);
       await deleteDoc(documentRef);
-      toast.success('Xóa bài viết thành công.', {
-        position: "bottom-left",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      alert_snackbar('Xóa bài viết thành công.', 1);
       fetchData();
       setSelectedItems([]);
     } catch (error) {
-      toast.error(error, {
-        position: "bottom-left",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      alert_snackbar(error, 2);
     }
   };
 

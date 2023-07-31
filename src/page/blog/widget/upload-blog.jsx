@@ -1,14 +1,13 @@
+import { collection, doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { alert_snackbar } from "../../../components/alert";
 import { URL_Project } from "../../../core/contant/contants";
 import { convertFileToBase64, formattedDateTime } from "../../../core/data-process/data-process";
 import { getObUser } from "../../../core/db/local";
 import { firestore } from "../../../core/services/controller";
-import { collection, doc, setDoc } from "firebase/firestore";
-
 
 const UploadBlog = (props) => {
   // useState
@@ -64,28 +63,10 @@ const UploadBlog = (props) => {
         if (logoBase64 !== null && title !== "" && editorHtml !== null) {
           await setDoc(doc(collectionRef, newId), data);
           navigate("/blog");
-          toast.success('Thêm bài viết thành công.', {
-            position: "bottom-left",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          alert_snackbar('Thêm bài viết thành công.', 1);
         }
       } catch (error) {
-        toast.error(error, {
-          position: "bottom-left",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        alert_snackbar(error, 2);
       }
     };
     saveData();

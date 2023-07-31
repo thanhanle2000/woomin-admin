@@ -8,6 +8,7 @@ import { getPathCate, savePathCate } from '../core/db/local';
 import { useNavigate } from 'react-router-dom';
 import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 
 const CustomDrawer = ({ id, visible, onClose }) => {
     // useRef
@@ -36,6 +37,7 @@ const CustomDrawer = ({ id, visible, onClose }) => {
         { id: 2, name: "Quản lý hình ảnh", icon: <ImageIcon />, link: "/image" },
         { id: 3, name: "Quản lý bài viết", icon: <RateReviewIcon />, link: "/blog" },
         { id: 4, name: "Quản lý danh mục", icon: <DashboardCustomizeIcon />, link: "/cate" },
+        { id: 5, name: "Quản lý sản phẩm    ", icon: <ContentPasteIcon />, link: "/product" },
     ]
 
     // navigate

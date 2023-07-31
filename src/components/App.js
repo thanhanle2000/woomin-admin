@@ -9,12 +9,14 @@ import BlogPage from '../page/blog/blog';
 import EditBlogPage from '../page/blog/widget/edit-blog';
 import UploadBlog from '../page/blog/widget/upload-blog';
 import CatePage from '../page/cate/cate';
+import CategoryScreen from '../page/cate/widget/drag-item-cate';
+import EditCatePage from '../page/cate/widget/edit-cate';
 import UploadCate from '../page/cate/widget/upload-cate';
 import HomePage from '../page/home/home';
 import { ImagePage } from '../page/image/image';
+import ProductPage from '../page/product/product';
+import UploadProduct from '../page/product/widget/upload-product';
 import CustomHeader from './custom-header';
-import EditCatePage from '../page/cate/widget/edit-cate';
-import CategoryScreen from '../page/cate/widget/drag-item-cate';
 
 function App() {
   // check login
@@ -35,6 +37,8 @@ function App() {
           <Route path="/upload-cate" element={<UploadCate />} />
           <Route path="/edit-cate" element={<EditCatePage />} />
           <Route path="/drag-item-cate" element={<CategoryScreen />} />
+          <Route path="/product" element={<ProductPage />} />
+          <Route path="/upload-product" element={<UploadProduct />} />
         </Routes>
       </div>
       <ToastContainer />

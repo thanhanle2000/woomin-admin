@@ -1,29 +1,20 @@
 import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from '@mui/icons-material/Edit';
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+// import DeleteIcon from "@mui/icons-material/Delete";
+// import EditIcon from '@mui/icons-material/Edit';
+// import { CSSTransition } from "react-transition-group";
+import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CSSTransition } from "react-transition-group";
 import { alert_snackbar } from "../../components/alert";
 import BreadCumHeader from '../../components/breadcum-header';
-import Loading from "../../components/loading";
 import { firestore } from "../../core/services/controller";
-import TableDataCate from './widget/table-data-cate';
 
-const CatePage = () => {
+
+const ProductPage = () => {
     // useState
     const [data, setData] = useState([]);
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [loading, setLoading] = useState(false);
-
-    // navigate
-    const navigate = useNavigate();
-
-    // handleNextPage
-    const handleNextPage = () => {
-        navigate("/upload-cate");
-    }
+    // const [selectedItems, setSelectedItems] = useState([]);
+    // const [loading, setLoading] = useState(false);
 
     // useEffect
     useEffect(() => {
@@ -32,7 +23,7 @@ const CatePage = () => {
 
     // lấy dữ liệu
     const fetchData = async () => {
-        setLoading(true); // Show loading state
+        // setLoading(true); // Show loading state
         try {
             const collectionRef = collection(firestore, "category");
             const querySnapshot = await getDocs(collectionRef);
@@ -41,41 +32,22 @@ const CatePage = () => {
                 ...doc.data(),
             }));
             setData(dataJs);
-            setLoading(false);
+            // setLoading(false);
         } catch (error) {
             alert_snackbar(error, 2);
         }
     };
+    // navigate
+    const navigate = useNavigate();
 
-    // select id
-    const handleSelectItem = (id) => {
-        setSelectedItems((prevSelectedItems) =>
-            prevSelectedItems.includes(id)
-                ? prevSelectedItems.filter((item) => item !== id)
-                : [...prevSelectedItems, id]
-        );
-    };
-
-    const handleDelete = async (id) => {
-        try {
-            const documentRef = doc(firestore, "category", id);
-            await deleteDoc(documentRef);
-            alert_snackbar('Xóa danh mục thành công.', 1);
-            fetchData();
-            setSelectedItems([]);
-        } catch (error) {
-            alert_snackbar(error, 2);
-        }
-    };
-
-    // handle edit cate
-    const handleEdit = (id) => {
-        navigate(`/edit-cate`, { state: { id } });
-    };
+    // handleNextPage
+    const handleNextPage = () => {
+        navigate("/upload-product", { state: { data } });
+    }
 
     return (
         <div className="page plr-15">
-            <BreadCumHeader title={"QL Danh Mục"} />
+            <BreadCumHeader title={"QL Sản Phẩm"} />
             <div className="btn-ac-blog">
                 <div className="row-ic-add mr-10"
                     onClick={handleNextPage}
@@ -83,7 +55,7 @@ const CatePage = () => {
                     <AddIcon />
                     <button>Tạo mới</button>
                 </div>
-                {selectedItems.length > 0 && (
+                {/* {selectedItems.length > 0 && (
                     <CSSTransition
                         in={selectedItems.length > 0}
                         timeout={500}
@@ -92,7 +64,7 @@ const CatePage = () => {
                     >
                         <div
                             className="row-ic-edit mr-10"
-                            onClick={() => selectedItems.forEach((id) => handleEdit(id))}
+                        // onClick={() => selectedItems.forEach((id) => handleEdit(id))}
                         >
                             <EditIcon />
                             <button>Chỉnh Sửa</button>
@@ -108,25 +80,16 @@ const CatePage = () => {
                     >
                         <div
                             className="row-ic-delete"
-                            onClick={() => selectedItems.forEach((id) => handleDelete(id))}
+                        // onClick={() => selectedItems.forEach((id) => handleDelete(id))}
                         >
                             <DeleteIcon />
                             <button>Xóa</button>
                         </div>
                     </CSSTransition>
-                )}
+                )} */}
             </div>
-            {loading ? (
-                <Loading />
-            ) : (
-                <TableDataCate
-                    documents={data}
-                    selectedItems={selectedItems}
-                    handleSelectItem={handleSelectItem}
-                />
-            )}
         </div>
     )
 }
 
-export default CatePage
+export default ProductPage

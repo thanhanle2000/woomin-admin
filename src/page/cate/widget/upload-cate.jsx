@@ -1,11 +1,11 @@
+import { collection, doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { alert_snackbar } from "../../../components/alert";
 import { URL_Project } from "../../../core/contant/contants";
 import { convertFileToBase64, formattedDateTime } from "../../../core/data-process/data-process";
 import { getObUser } from "../../../core/db/local";
 import { firestore } from "../../../core/services/controller";
-import { collection, doc, setDoc } from "firebase/firestore";
 
 const UploadCate = () => {
     // useState
@@ -51,31 +51,13 @@ const UploadCate = () => {
                     userUpdate: null, // user update,
                     timeUpdate: null // thời gian update
                 };
-                if (logoBase64 !== null && title !== "") {
+                if (title !== "") {
                     await setDoc(doc(collectionRef, newId), data);
                     navigate("/cate");
-                    toast.success('Thêm bài viết thành công.', {
-                        position: "bottom-left",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
+                    alert_snackbar('Thêm bài viết thành công.', 1);
                 }
             } catch (error) {
-                toast.error(error, {
-                    position: "bottom-left",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                alert_snackbar(error, 2);
             }
         };
         saveData();
@@ -89,7 +71,7 @@ const UploadCate = () => {
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="VD: Dự án bán"
+                    placeholder="VD: Dự án mới nhất"
                 />
                 <div className="checkbox-row">
                     <label className="w-80">

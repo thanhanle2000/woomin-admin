@@ -1,10 +1,10 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { alert_snackbar } from "../../../components/alert";
 import { convertFileToBase64, formattedDateTime } from "../../../core/data-process/data-process";
 import { getObUser } from "../../../core/db/local";
 import { firestore } from "../../../core/services/controller";
-import { toast } from 'react-toastify';
 
 const EditCatePage = () => {
     // useState
@@ -35,28 +35,10 @@ const EditCatePage = () => {
                         setLogoPreview(documentData.logo);
                     }
                 } else {
-                    toast.error("Không đọc được dữ liệu.", {
-                        position: "bottom-left",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
+                    alert_snackbar("Không đọc được dữ liệu.", 2);
                 }
             } catch (error) {
-                toast.error(error, {
-                    position: "bottom-left",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                alert_snackbar(error, 2);
             }
         };
 
@@ -86,27 +68,9 @@ const EditCatePage = () => {
                 status: isChecked
             });
             navigate("/cate");
-            toast.success('Update danh mục thành công.', {
-                position: "bottom-left",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            alert_snackbar('Update danh mục thành công.', 1);
         } catch (error) {
-            toast.error(error, {
-                position: "bottom-left",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            alert_snackbar(error, 2);
         }
     };
 
@@ -150,7 +114,7 @@ const EditCatePage = () => {
                                 handleLogoChange(selectedFile);
                             } else {
                                 setLogo(null);
-                                alert("Vui lòng chọn một ảnh nhỏ hơn hoặc bằng 1MB.");
+                                alert_snackbar("Vui lòng chọn một ảnh nhỏ hơn hoặc bằng 1MB.", 2);
                             }
                         }}
                     />

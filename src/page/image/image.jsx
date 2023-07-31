@@ -10,8 +10,8 @@ import {
   updateDoc
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { toast } from 'react-toastify';
 import { CSSTransition } from "react-transition-group";
+import { alert_snackbar } from "../../components/alert";
 import BreadCumHeader from "../../components/breadcum-header";
 import Loading from "../../components/loading";
 import PopupActives from "../../components/popup-actives";
@@ -41,16 +41,7 @@ export function ImagePage() {
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
     if (!file) {
-      toast.error("Lỗi: Không tìm thấy file", {
-        position: "bottom-left",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      alert_snackbar("Lỗi: Không tìm thấy file", 2);
       return;
     }
     const maxSize = 1 * 1024 * 1024; // Kích thước tối đa là 1MB
@@ -101,27 +92,9 @@ export function ImagePage() {
         await setDoc(doc(collectionRef, newId), imageData);
 
         setLstImage((prev) => [...prev, imageData]);
-        toast.success('Ảnh đã được thêm thành công.', {
-          position: "bottom-left",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        alert_snackbar('Ảnh đã được thêm thành công.', 1);
       } catch (error) {
-        toast.error(error, {
-          position: "bottom-left",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        alert_snackbar(error, 2);
       } finally {
         setLoading(false); // Hide loading state
       }
@@ -141,28 +114,10 @@ export function ImagePage() {
         setLstImage((prev) =>
           prev.filter((item) => !selectedImages.includes(item.id))
         );
-        toast.success("Ảnh đã được xóa thành công.", {
-          position: "bottom-left",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        alert_snackbar("Ảnh đã được xóa thành công.", 1);
       })
       .catch((error) => {
-        toast.error(error, {
-          position: "bottom-left",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        alert_snackbar(error, 2);
       })
       .finally(() => {
         setSelectedImages([]); // Reset danh sách ảnh được chọn
@@ -198,16 +153,7 @@ export function ImagePage() {
         }));
         setLstImage(images);
       } catch (error) {
-        toast.error(error, {
-          position: "bottom-left",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        alert_snackbar(error, 2);
       } finally {
         setLoading(false); // Hide loading state
       }
@@ -234,16 +180,7 @@ export function ImagePage() {
         setCurrentActive(active);
       }
     } catch (error) {
-      toast.error("Lỗi khi lấy giá trị active từ Firestore:", error, {
-        position: "bottom-left",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      alert_snackbar("Lỗi khi lấy giá trị active từ Firestore:", error, 2);
     }
 
     setIsModalOpen(true);
@@ -269,27 +206,9 @@ export function ImagePage() {
             : image
         )
       );
-      toast.success('Cập nhật trạng thái thành công.', {
-        position: "bottom-left",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      alert_snackbar('Cập nhật trạng thái thành công.', 1);
     } catch (error) {
-      toast.error(error, {
-        position: "bottom-left",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      alert_snackbar(error, 2);
     } finally {
       setLoading(false); // Hide loading state
       setIsModalOpen(false); // Close the modal

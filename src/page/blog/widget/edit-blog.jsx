@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import { alert_snackbar } from "../../../components/alert";
 import { convertFileToBase64, formattedDateTime } from "../../../core/data-process/data-process";
 import { getObUser } from "../../../core/db/local";
 import { firestore } from "../../../core/services/controller";
-import { toast } from 'react-toastify';
 
 const EditBlogPage = () => {
     // useState
@@ -44,28 +44,10 @@ const EditBlogPage = () => {
                         setLogoPreview(documentData.logo);
                     }
                 } else {
-                    toast.error("Không đọc được dữ liệu.", {
-                        position: "bottom-left",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
+                    alert_snackbar("Không đọc được dữ liệu.", 2);
                 }
             } catch (error) {
-                toast.error(error, {
-                    position: "bottom-left",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                alert_snackbar(error, 2);
             }
         };
 
@@ -96,27 +78,9 @@ const EditBlogPage = () => {
                 status: isChecked
             });
             navigate("/blog");
-            toast.success('Update bài viết thành công.', {
-                position: "bottom-left",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            alert_snackbar('Update bài viết thành công.', 1);
         } catch (error) {
-            toast.error(error, {
-                position: "bottom-left",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            alert_snackbar(error, 2);
         }
     };
 
@@ -135,7 +99,6 @@ const EditBlogPage = () => {
             matchVisual: false,
         },
     };
-
 
     const formats = [
         "header",
@@ -187,7 +150,7 @@ const EditBlogPage = () => {
                                 handleLogoChange(selectedFile);
                             } else {
                                 setLogo(null);
-                                alert("Vui lòng chọn một ảnh nhỏ hơn hoặc bằng 1MB.");
+                                alert_snackbar("Vui lòng chọn một ảnh nhỏ hơn hoặc bằng 1MB.", 2);
                             }
                         }}
                     />
