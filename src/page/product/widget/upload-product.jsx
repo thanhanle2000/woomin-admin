@@ -200,16 +200,17 @@ const UploadProduct = () => {
 
                             </div>
                         </div>
-                        <div className="multi-select-row" >
+                        <div className="multi-select-row">
                             {selectedImages.map((imageUrl, index) => (
                                 <img
                                     key={index}
                                     src={imageUrl}
-                                    alt={`Image`}
+                                    alt={`Selected image ${index + 1}`}
                                     className="img-multi-select"
                                 />
                             ))}
                         </div>
+
                     </div>
                 </div>
                 <div className="col-item-cate">
