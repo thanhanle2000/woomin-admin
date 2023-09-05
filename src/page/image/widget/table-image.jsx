@@ -44,11 +44,11 @@ const ImageTable = ({
               </td>
               <td
                 className={
-                  image.active ? "active-image-banner" : "unactive-image-banner"
+                  image.status ? "active-image-banner" : "unactive-image-banner"
                 }
                 onClick={() => openModal(image.id)}
               >
-                {image.active ? "Đang hoạt động" : "Ngưng hoạt động"}
+                {image.status ? "Đang hoạt động" : "Ngưng hoạt động"}
               </td>
               <td>{image.userCreate}</td>
               <td>{image.timeCreate}</td>

@@ -80,7 +80,7 @@ export function ImagePage() {
         const imageData = {
           id: newId,
           image: imageBase64,
-          active: true,
+          status: true,
           imageName: imageName,
           userCreate: obUser,
           timeCreate: formattedDateTime,
@@ -176,11 +176,11 @@ export function ImagePage() {
       const imageDocSnapshot = await getDoc(imageDocRef);
       if (imageDocSnapshot.exists()) {
         const imageData = imageDocSnapshot.data();
-        const active = imageData?.active || false;
+        const active = imageData?.status || false;
         setCurrentActive(active);
       }
     } catch (error) {
-      alert_snackbar("Lỗi khi lấy giá trị active từ Firestore:", error, 2);
+      alert_snackbar("Lỗi khi lấy giá trị status từ Firestore:", error, 2);
     }
 
     setIsModalOpen(true);
@@ -197,12 +197,12 @@ export function ImagePage() {
       const collectionRef = collection(firestore, "banner-mobile");
       const imageDocRef = doc(collectionRef, activeImageId);
 
-      await updateDoc(imageDocRef, { active: currentActive, timeUpdate: formattedDateTime, userUpdate: obUser });
+      await updateDoc(imageDocRef, { status: currentActive, timeUpdate: formattedDateTime, userUpdate: obUser });
 
       setLstImage((prev) =>
         prev.map((image) =>
           image.id === activeImageId
-            ? { ...image, active: currentActive }
+            ? { ...image, status: currentActive }
             : image
         )
       );

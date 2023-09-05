@@ -1,5 +1,5 @@
-import { collection, doc, setDoc } from "firebase/firestore";
-import React, { useState } from "react";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { alert_snackbar } from "../../../components/alert";
 import { URL_Project } from "../../../core/contant/contants";
@@ -9,7 +9,8 @@ import { firestore } from "../../../core/services/controller";
 import ProductForm from "./product-form";
 import ProductWrite from "./product-write";
 
-const UploadProduct = () => {
+const EditProduct = () => {
+
     // useState
     const [title, setTitle] = useState("");
     const [logo, setLogo] = useState(null);
@@ -29,15 +30,80 @@ const UploadProduct = () => {
         setEditorHtml(html);
     };
 
-    // route
-    const { state } = useLocation();
-    const { data } = state || {};
-
-    // userOb
-    const userOb = getObUser();
-
     // navigate
     const navigate = useNavigate();
+
+    // data tab
+    const lstTab = [
+        { id: 1, title: "Thông tin" },
+        { id: 2, title: "Nội dung" },
+    ];
+
+    // Fetch data from Firestore based on the ID from state
+    const { state } = useLocation();
+    const { id } = state || {};
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const documentRef = doc(firestore, "product", id);
+                const documentSnapshot = await getDoc(documentRef);
+                if (documentSnapshot.exists()) {
+                    const documentData = documentSnapshot.data();
+                    setTitle(documentData.title);
+                    setLogo(documentData.logo);
+                    setIsChecked(documentData.status);
+                    setWarehouse(documentData.warehouse);
+                    setPrice(documentData.price);
+                    setPriceDrop(documentData.priceDrop);
+                    setSelectedImages(documentData.selectedImages);
+                    setSelectedIds(documentData.selectedIds);
+                    setTitleWrite(documentData.titleWrite);
+                    setEditorHtml(documentData.editorHtml);
+                } else {
+                    alert_snackbar("Không đọc được dữ liệu.", 2);
+                }
+            } catch (error) {
+                alert_snackbar(error, 2);
+            }
+        };
+
+        fetchData();
+    }, [id]);
+
+    const handleImageChange = async (event) => {
+        const files = event.target.files;
+        const imageList = [];
+
+        // Loop through selected files and check their sizes
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const maxSize = 1024 * 1024; // 1MB
+
+            if (file.size <= maxSize) {
+                const randomId = generateRandomId();
+
+                // Convert file to base64
+                try {
+                    const base64Data = await convertFileToBase64(file);
+                    imageList.push({ id: randomId, img: base64Data });
+                } catch (error) {
+                    alert_snackbar("Có lỗi xảy ra khi chuyển đổi ảnh sang base64.", 2);
+                }
+            } else {
+                alert_snackbar("Vui lòng chọn hình ảnh có kích thước nhỏ hơn 1MB.", 2);
+            }
+        }
+
+        // Check if the imageList contains the logo image
+        const logoImage = imageList.find((item) => item.id === 'logo');
+        if (logoImage) {
+            setLogo(logoImage.img); // Set the logo as a Base64 string in the 'logo' state
+        }
+
+        // Update the state with the list of valid image objects (with random IDs and image URLs)
+        setSelectedImages(imageList);
+    };
+
 
     // handleInput
     const handleChange = (event) => {
@@ -63,8 +129,6 @@ const UploadProduct = () => {
             return prevSelectedIds;
         });
     };
-
-    // lưu trữ cate
     const handleUpLoad = () => {
 
         // Store HTML content in Firestore
@@ -132,6 +196,10 @@ const UploadProduct = () => {
         saveData();
     };
 
+    const handleTabbar = (id) => {
+        setTab(id);
+    }
+
     const generateRandomId = () => {
         const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         const idLength = 3; // Adjust the length of the random ID as needed
@@ -142,84 +210,54 @@ const UploadProduct = () => {
         }
         return randomId;
     };
-
-
-    const handleImageChange = async (event) => {
-        const files = event.target.files;
-        const imageList = [];
-
-        // Loop through selected files and check their sizes
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const maxSize = 1024 * 1024; // 1MB
-
-            if (file.size <= maxSize) {
-                const randomId = generateRandomId();
-
-                // Convert file to base64
-                try {
-                    const base64Data = await convertFileToBase64(file);
-                    imageList.push({ id: randomId, img: base64Data });
-                } catch (error) {
-                    alert_snackbar("Có lỗi xảy ra khi chuyển đổi ảnh sang base64.", 2);
-                }
-            } else {
-                alert_snackbar("Vui lòng chọn hình ảnh có kích thước nhỏ hơn 1MB.", 2);
-            }
-        }
-
-        // Update the state with the list of valid image objects (with random IDs and image URLs)
-        setSelectedImages(imageList);
-    };
-
-
-    // tab
-    const handleTabbar = (id) => {
-        setTab(id);
-    }
-
-    // data tab
-    const lstTab = [
-        { id: 1, title: "Thông tin" },
-        { id: 2, title: "Nội dung" },
-    ]
+    // userOb
+    const userOb = getObUser();
     return (
-        <div className='page plr-15'>
+        <div className="page plr-15">
             <div className="row-tab-product">
-                {
-                    lstTab.map((e) =>
-                        <div className={tab === e.id ? "item-tab-active" : "item-tab"} onClick={() => handleTabbar(e.id)} key={e.id}>{e.title}</div>
-                    )
-                }
+                {lstTab.map((e) => (
+                    <div
+                        className={tab === e.id ? "item-tab-active" : "item-tab"}
+                        onClick={() => handleTabbar(e.id)}
+                        key={e.id}
+                    >
+                        {e.title}
+                    </div>
+                ))}
             </div>
-            {
-                tab === 1 ?
-                    <ProductForm
-                        title={title}
-                        setTitle={setTitle}
-                        isChecked={isChecked}
-                        setIsChecked={setIsChecked}
-                        warehouse={warehouse}
-                        setWarehouse={setWarehouse}
-                        logo={logo}
-                        setLogo={setLogo}
-                        price={price}
-                        setPrice={setPrice}
-                        priceDrop={priceDrop}
-                        setPriceDrop={setPriceDrop}
-                        selectedImages={selectedImages}
-                        handleImageChange={handleImageChange}
-                        data={data}
-                        checkValue={checkValue}
-                        handleChange={handleChange}
-                    /> : <ProductWrite title={titleWrite} setTitle={setTitleWrite} handleChange={handleChangeWrite} editorHtml={editorHtml} />
-            }
-            <button className="btn-save-blog"
-                onClick={handleUpLoad}>
+            {tab === 1 ? (
+                <ProductForm
+                    title={title}
+                    setTitle={setTitle}
+                    isChecked={isChecked}
+                    setIsChecked={setIsChecked}
+                    warehouse={warehouse}
+                    setWarehouse={setWarehouse}
+                    // logo={logo}
+                    // setLogo={setLogo}
+                    price={price}
+                    setPrice={setPrice}
+                    priceDrop={priceDrop}
+                    setPriceDrop={setPriceDrop}
+                    selectedImages={selectedImages}
+                    handleImageChange={handleImageChange}
+                    data={selectedIds}
+                    checkValue={checkValue}
+                    handleChange={handleChange}
+                />
+            ) : (
+                <ProductWrite
+                    title={titleWrite}
+                    setTitle={setTitleWrite}
+                    handleChange={handleChangeWrite}
+                    editorHtml={editorHtml}
+                />
+            )}
+            <button className="btn-save-blog" onClick={handleUpLoad}>
                 Lưu sản phẩm
             </button>
         </div>
     )
 }
 
-export default UploadProduct;
+export default EditProduct;

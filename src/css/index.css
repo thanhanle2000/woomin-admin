@@ -332,7 +332,7 @@ input[type="search"] {
 }
 
 .img-upload-view {
-  height: 85px;
+  /* height: 85px; */
   width: 85px;
   padding-left: 20px;
 }

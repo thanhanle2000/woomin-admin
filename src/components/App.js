@@ -17,6 +17,7 @@ import { ImagePage } from '../page/image/image';
 import ProductPage from '../page/product/product';
 import UploadProduct from '../page/product/widget/upload-product';
 import CustomHeader from './custom-header';
+import EditProduct from '../page/product/widget/edit-product';
 
 function App() {
   // check login
@@ -39,6 +40,7 @@ function App() {
           <Route path="/drag-item-cate" element={<CategoryScreen />} />
           <Route path="/product" element={<ProductPage />} />
           <Route path="/upload-product" element={<UploadProduct />} />
+          <Route path="/edit-product" element={<EditProduct />} />
         </Routes>
       </div>
       <ToastContainer />

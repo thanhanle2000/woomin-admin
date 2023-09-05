@@ -14,7 +14,7 @@ const UploadBlog = (props) => {
   const [editorHtml, setEditorHtml] = useState("");
   const [title, setTitle] = useState("");
   const [logo, setLogo] = useState(null);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   // check box
   const handleCheckBoxChange = () => {

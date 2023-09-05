@@ -91,6 +91,9 @@ const ProductPage = () => {
         }
     };
 
+    const handleEdit = (id) => {
+        navigate(`/edit-product`, { state: { id } });
+    };
     return (
         <div className="page plr-15">
             <BreadCumHeader title={"QL Sản Phẩm"} />
@@ -110,7 +113,7 @@ const ProductPage = () => {
                     >
                         <div
                             className="row-ic-edit mr-10"
-                        // onClick={() => selectedItems.forEach((id) => handleEdit(id))}
+                            onClick={() => selectedItems.forEach((id) => handleEdit(id))}
                         >
                             <EditIcon />
                             <button>Chỉnh Sửa</button>
